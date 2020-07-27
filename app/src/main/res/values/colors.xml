@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/background_color</color>
+    <color name="colorPrimaryDark">@color/background_color</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="white">#ffffff</color>
+    <color name="smiTransparent">#d2000000</color>
+    <color name="black">#000000</color>
+    <color name="gray">#acacac</color>
+    <color name="dark_gray_bg">#3295989D</color>
+    <color name="background_color">#23272F</color>
+</resources>
