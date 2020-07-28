@@ -12,6 +12,8 @@ import com.mindvalley.test.R
 import com.mindvalley.test.model.responses.channels.Channel
 import com.mindvalley.test.ui.home.MediaListAdapter
 import com.mindvalley.test.utils.extension.loadImage
+import com.mindvalley.test.utils.extension.setHorizontalLayoutManager
+import com.mindvalley.test.utils.extension.setupAnimation
 import kotlinx.android.synthetic.main.item_channel.view.*
 import kotlinx.android.synthetic.main.item_headers.view.*
 import kotlinx.android.synthetic.main.item_media_card.view.tvTitle
@@ -20,18 +22,12 @@ import kotlinx.android.synthetic.main.item_media_card.view.tvTitle
 class ChannelsListAdapter : RecyclerView.Adapter<ChannelsListAdapter.ViewHolder>() {
 
     private lateinit var channels: ArrayList<Channel>
-    private val viewPool = RecyclerView.RecycledViewPool()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val mediaView = LayoutInflater.from(parent.context).inflate(R.layout.item_channel, parent, false)
-
-        val resId: Int = R.anim.layout_animation_slide_from_right
-        val animation: LayoutAnimationController = AnimationUtils.loadLayoutAnimation(mediaView.context, resId)
-        mediaView.mediaRv.setLayoutAnimation(animation)
-
+        mediaView.mediaRv.setupAnimation(R.anim.layout_animation_slide_from_right)
         return ViewHolder(
-            mediaView,
-            viewPool
+            mediaView
         )
     }
 
@@ -48,7 +44,7 @@ class ChannelsListAdapter : RecyclerView.Adapter<ChannelsListAdapter.ViewHolder>
         // Due to short time I was not able to write Diff Utils for this but yes diff utils was going
         // to make this update lot smoother
         // val diffResult = DiffUtil.calculateDiff(MyDiffUtilCB(getItems(), items))
-        if (this::channels.isInitialized){
+        if (this::channels.isInitialized) {
             this.channels.clear()
         }
 
@@ -57,27 +53,30 @@ class ChannelsListAdapter : RecyclerView.Adapter<ChannelsListAdapter.ViewHolder>
 
     }
 
-    class ViewHolder(private val view: View ,val viewPool : RecyclerView.RecycledViewPool) : RecyclerView.ViewHolder(view) {
-        var adapter : MediaListAdapter? = null
+    class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+        var adapter: MediaListAdapter? = null
 
         fun bind(m: Channel) {
             var desc = " episodes"
 
-            if (m.series.size > 0) {
+            if (m.series != null && m.series!!.size > 0) {
                 adapter = MediaListAdapter(true)
-                adapter?.updateMedia(m.series)
+                adapter?.updateMedia(m.series!!)
                 desc = " series"
-            }else{
+            } else {
                 adapter = MediaListAdapter(false)
                 adapter?.updateMedia(m.latestMedia)
             }
 
-            Log.e("UPDATE" , m.title)
+            m.iconAsset?.thumbnailUrl?.let {
+                Log.e("THUMB" , it)
+                view.thumbnailImg.loadImage(it, true , defaultImg = R.drawable.ic_dim_logo)
+            }
 
             view.tvTitle.text = m.title
             view.tvDesc.text = m.mediaCount.toString() + desc
-            view.thumbnailImg.loadImage(m.iconAsset?.url , true)
-            view.mediaRv.layoutManager = LinearLayoutManager(view.context , RecyclerView.HORIZONTAL , false)
+
+            view.mediaRv.setHorizontalLayoutManager()
             view.mediaRv.adapter = adapter
         }
     }

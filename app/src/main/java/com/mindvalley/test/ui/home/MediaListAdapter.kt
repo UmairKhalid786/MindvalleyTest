@@ -1,8 +1,6 @@
 package com.mindvalley.test.ui.home
 
 import android.net.Uri
-import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,16 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mindvalley.test.R
 import com.mindvalley.test.model.responses.Media
 import com.mindvalley.test.model.responses.episodes.Episode
-import com.mindvalley.test.utils.dpToPixel
 import com.mindvalley.test.utils.extension.addUriParameter
 import com.mindvalley.test.utils.extension.loadImage
 import kotlinx.android.synthetic.main.item_media_card.view.*
-import kotlin.math.roundToInt
 
-class MediaListAdapter(var isForSeries: Boolean = false) :
+class MediaListAdapter(var isForSeries: Boolean = false) : RecyclerView.Adapter<MediaListAdapter.ViewHolder>() {
 
-    RecyclerView.Adapter<MediaListAdapter.ViewHolder>() {
-
+    //It was mentioned in document to limit list item to 6 only
+    private val horizontalListLimit = 6
     private lateinit var media: List<Media>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,15 +24,19 @@ class MediaListAdapter(var isForSeries: Boolean = false) :
         if (isForSeries)
             layout = R.layout.item_media_series_card
 
-        return ViewHolder( LayoutInflater.from(parent.context).inflate(layout, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(media[position], isForSeries)
+        holder.bind(media[position])
     }
 
     override fun getItemCount(): Int {
-        return if (::media.isInitialized) media.size else 0
+        return if (::media.isInitialized) showWithLimit(media.size) else 0
+    }
+
+    private fun showWithLimit(size: Int): Int {
+        return if (size > horizontalListLimit) horizontalListLimit else size
     }
 
 
@@ -46,7 +46,7 @@ class MediaListAdapter(var isForSeries: Boolean = false) :
     }
 
     class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(m: Media, isForSeries: Boolean) {
+        fun bind(m: Media) {
 
             view.tvDescription.visibility = View.GONE
 

@@ -18,7 +18,7 @@ data class Channel(
     @SerializedName("title") var title: String,
     @SerializedName("mediaCount") var mediaCount: Int,
     @TypeConverters(SeriesConverter::class)
-    @SerializedName("series") var series: List<Series>,
+    @SerializedName("series") var series: List<Series>?,
     @TypeConverters(LatestMediaConverter::class)
     @SerializedName("latestMedia") var latestMedia: List<LatestMedia>,
     @TypeConverters(IconAssetConverter::class)

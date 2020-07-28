@@ -1,26 +1,24 @@
 package com.mindvalley.test.ui.home.category
 
-import android.app.Application
 import android.os.AsyncTask
-import android.util.Log
 import com.mindvalley.test.base.BaseRepository
 import com.mindvalley.test.model.CategoriesDao
 import com.mindvalley.test.model.responses.categories.Category
-import com.mindvalley.test.network.MindValleyApi
 import io.reactivex.Observable
-import javax.inject.Inject
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class CategoriesRepository(private val categoriesDao: CategoriesDao) :
     BaseRepository() {
 
-    fun loadAll(forceRefresh: Boolean = false) : Observable<List<Category>> {
+    fun loadAll(forceRefresh: Boolean = false): Observable<List<Category>> {
         if (forceRefresh) {
             AsyncTask.execute {
                 categoriesDao.clearAll()
             }
         }
 
-       return Observable.fromCallable { categoriesDao.all }
+        return Observable.fromCallable { categoriesDao.all }
             .concatMap { dbMindValley ->
                 if (dbMindValley.isEmpty())
                     mindValleyApi.getCategories().concatMap { apiArticleResponse ->
@@ -29,7 +27,8 @@ class CategoriesRepository(private val categoriesDao: CategoriesDao) :
                     }
                 else
                     Observable.just(dbMindValley)
-            }
+            }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
     fun clearAll() {

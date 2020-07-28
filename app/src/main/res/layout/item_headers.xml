@@ -10,8 +10,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/thumbnailImg"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="@dimen/left_icon_hw"
+                android:layout_height="@dimen/left_icon_hw"
                 android:layout_marginEnd="0dp"
                 android:layout_marginStart="0dp"
                 android:contentDescription="@string/app_name"
@@ -30,18 +30,16 @@
             <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/title_font"
                     android:fontFamily="@font/roboto_medium"
                     android:textColor="@color/white"
-                    android:text="Title"
                     app:layout_constraintTop_toTopOf="parent"
                     android:id="@+id/tvTitle"/>
 
             <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:text="Description"
+                    android:textSize="@dimen/desc_font"
                     android:fontFamily="@font/roboto_medium"
                     android:textColor="@color/gray"
                     android:id="@+id/tvDesc"/>

@@ -16,26 +16,7 @@ abstract class BaseListViewModel : ViewModel() {
     val errorMessage: MutableLiveData<Int> = MutableLiveData()
     var subscription: Disposable? = null
 
-
-    private val injector: MainInjector = DaggerMainInjector
-        .builder()
-        .networkModule(NetworkModule)
-        .build()
-
-//    init {
-//        inject()
-//    }
-
     abstract fun loadAll(forceRefresh: Boolean = false)
-
-//    /**
-//     * Injects the required dependencies
-//     */
-//    private fun inject() {
-//        when (this) {
-//            is CategoriesListViewModel -> injector.inject(this)
-//        }
-//    }
 
     override fun onCleared() {
         super.onCleared()

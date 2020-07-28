@@ -9,11 +9,11 @@ class ChannelsListViewModel(
     private val repository: ChannelsRepository
 ) : BaseListViewModel() {
 
-    val chanObserver: MutableLiveData<ArrayList<Channel>> = MutableLiveData()
-
     init {
         loadAll()
     }
+
+    val chanObserver: MutableLiveData<ArrayList<Channel>> = MutableLiveData()
 
     override fun loadAll(forceRefresh: Boolean) {
         if (forceRefresh) {

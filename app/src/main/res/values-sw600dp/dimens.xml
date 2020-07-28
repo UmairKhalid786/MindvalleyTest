@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="default_padding">32dp</dimen>
+    <dimen name="special_default_padding">36dp</dimen>
+    <dimen name="cap_padding">44dp</dimen>
+    <dimen name="small_padding">22dp</dimen>
+    <dimen name="min_padding">10dp</dimen>
+    <dimen name="left_icon_hw">90dp</dimen>
+    <dimen name="card_item_small_dim">212dp</dimen>
+    <dimen name="card_item_large_dim">319dp</dimen>
+    <dimen name="title_font">28sp</dimen>
+    <dimen name="desc_font">20sp</dimen>
+    <dimen name="main_title_font">42sp</dimen>
+    <dimen name="mini_title_font">24sp</dimen>
+    <dimen name="mini_desc_font">18sp</dimen>
+    <dimen name="category_font">25sp</dimen>
+</resources>

@@ -36,8 +36,8 @@ class EpisodsRepository(private val episodesDao: EpisodesDao) :
     }
 
     fun clearAll() {
-        AsyncTask.execute({
+        AsyncTask.execute{
             episodesDao.clearAll()
-        })
+        }
     }
 }

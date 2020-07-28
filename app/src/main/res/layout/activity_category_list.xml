@@ -5,9 +5,24 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:background="@color/background_color">
 
+    <TextView
+            android:id="@+id/titleTv"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/main_title_font"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/gray"
+            android:text="Channels"
+            android:layout_marginLeft="@dimen/default_padding"
+            android:layout_marginRight="@dimen/default_padding"
+            android:layout_marginTop="@dimen/cap_padding"
+            android:layout_marginBottom="@dimen/cap_padding"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/pullToRefresh"
+            android:layout_below="@+id/titleTv"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -20,16 +35,20 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+
                 <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/title_font"
+                        android:visibility="gone"
                         android:fontFamily="@font/roboto_medium"
                         android:textColor="@color/gray"
                         android:text="New Episodes"
-                        android:layout_margin="@dimen/default_padding"
+                        android:layout_marginRight="@dimen/default_padding"
+                        android:layout_marginLeft="@dimen/default_padding"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:id="@+id/tvTitle"/>
+                        android:id="@+id/episodesTv"/>
+
 
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/episodesList"
@@ -37,7 +56,10 @@
                         android:layout_height="wrap_content"
                         android:clipToPadding="false"
                         android:layoutAnimation="@anim/layout_animation_slide_from_right"
-                        android:padding="11dp" />
+                        android:padding="@dimen/small_padding" />
+
+
+                <include android:visibility="gone" android:id="@+id/epiDvd" layout="@layout/divider" />
 
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/channelsList"
@@ -45,15 +67,32 @@
                         android:layout_height="wrap_content"
                         android:clipToPadding="false"
                         android:layoutAnimation="@anim/layout_animation_fall_down"
-                        android:padding="11dp" />
+                        />
+
+                <include android:visibility="gone" android:id="@+id/channelsDivd" layout="@layout/divider" />
+
+                <TextView
+                        android:id="@+id/categoriesTv"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/title_font"
+                        android:visibility="gone"
+                        android:fontFamily="@font/roboto_medium"
+                        android:textColor="@color/gray"
+                        android:text="Browse by categories"
+                        android:layout_marginTop="@dimen/default_padding"
+                        android:layout_marginRight="@dimen/default_padding"
+                        android:layout_marginLeft="@dimen/default_padding"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
 
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/categoriesList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:padding="@dimen/small_padding"
                         android:layoutAnimation="@anim/layout_animation_fall_down"
-                        android:clipToPadding="false"
-                        android:padding="11dp" />
+                        android:clipToPadding="false" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

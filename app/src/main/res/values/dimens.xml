@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="default_padding">16dp</dimen>
+    <dimen name="special_default_padding">18dp</dimen>
     <dimen name="cap_padding">22dp</dimen>
+    <dimen name="small_padding">11dp</dimen>
+    <dimen name="min_padding">5dp</dimen>
+    <dimen name="left_icon_hw">55dp</dimen>
+    <dimen name="card_item_small_dim">152dp</dimen>
+    <dimen name="card_item_large_dim">228dp</dimen>
+    <dimen name="title_font">20sp</dimen>
+    <dimen name="desc_font">14sp</dimen>
+    <dimen name="main_title_font">30sp</dimen>
+    <dimen name="mini_title_font">17sp</dimen>
+    <dimen name="mini_desc_font">13sp</dimen>
+    <dimen name="category_font">18sp</dimen>
 </resources>

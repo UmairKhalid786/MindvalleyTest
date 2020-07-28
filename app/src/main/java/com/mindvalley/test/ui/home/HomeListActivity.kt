@@ -2,13 +2,12 @@ package com.mindvalley.test.ui.home
 
 import android.os.Bundle
 import androidx.annotation.StringRes
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.mindvalley.test.R
 import com.mindvalley.test.base.BaseListViewModel
 import com.mindvalley.test.injection.ViewModelFactory
@@ -17,7 +16,12 @@ import com.mindvalley.test.ui.home.category.CategoryListAdapter
 import com.mindvalley.test.ui.home.channel.ChannelsListAdapter
 import com.mindvalley.test.ui.home.channel.ChannelsListViewModel
 import com.mindvalley.test.ui.home.episode.EpisodesListViewModel
+import com.mindvalley.test.utils.MainDividerItemDecoration
+import com.mindvalley.test.utils.extension.setHorizontalLayoutManager
+import com.mindvalley.test.utils.extension.setVerticalLayoutManager
+import com.mindvalley.test.utils.extension.visibility
 import kotlinx.android.synthetic.main.activity_category_list.*
+
 
 class HomeListActivity : AppCompatActivity() {
 
@@ -40,9 +44,10 @@ class HomeListActivity : AppCompatActivity() {
     }
 
     private fun setupViewModels() {
-        categoriesViewModel = ViewModelProviders.of(this, ViewModelFactory(this)).get(CategoriesListViewModel::class.java)
-        episodesViewModel = ViewModelProviders.of(this, ViewModelFactory(this)).get(EpisodesListViewModel::class.java)
-        channelsViewModel = ViewModelProviders.of(this, ViewModelFactory(this)).get(ChannelsListViewModel::class.java)
+
+        episodesViewModel       = loadViewModel(EpisodesListViewModel::class.java)
+        channelsViewModel       = loadViewModel(ChannelsListViewModel::class.java)
+        categoriesViewModel     = loadViewModel(CategoriesListViewModel::class.java)
 
         setViewModelListener(categoriesViewModel)
         setViewModelListener(episodesViewModel)
@@ -50,13 +55,16 @@ class HomeListActivity : AppCompatActivity() {
 
         categoriesViewModel.catObserver.observe(this, Observer { cats ->
             categoryListAdapter.update(cats)
+            categoriesTv.visibility(cats.size > 0)
         })
         channelsViewModel.chanObserver.observe(this, Observer { chans ->
             channelsAdapter.updateMedia(chans)
+            channelsDivd.visibility(chans.size > 0)
         })
-
         episodesViewModel.episodesObserver.observe(this, Observer { chans ->
             episodesAdapter.updateMedia(chans)
+            episodesTv.visibility(chans.size > 0)
+            epiDvd.visibility(chans.size > 0)
         })
     }
 
@@ -65,19 +73,18 @@ class HomeListActivity : AppCompatActivity() {
         viewModel.errorMessage.observe(this, onErrorObserver)
     }
 
-    val onLoadingObserver : Observer<Int> = object : Observer<Int> {
+    val onLoadingObserver: Observer<Int> = object : Observer<Int> {
         override fun onChanged(t: Int?) {
             pullToRefresh.isRefreshing = false
             progress.visibility = t!!
         }
     }
 
-    val onErrorObserver : Observer<Int> = object : Observer<Int> {
+    val onErrorObserver: Observer<Int> = object : Observer<Int> {
         override fun onChanged(errorMessage: Int?) {
             if (errorMessage != null) showError(errorMessage) else hideError()
         }
     }
-
 
     private fun initViews() {
         setTitle("Channels")
@@ -85,6 +92,7 @@ class HomeListActivity : AppCompatActivity() {
         pullToRefresh.setOnRefreshListener {
             refresh()
         }
+        channelsList.addItemDecoration(MainDividerItemDecoration(this))
     }
 
     private fun refresh() {
@@ -94,9 +102,11 @@ class HomeListActivity : AppCompatActivity() {
     }
 
     private fun setAdapters() {
-        categoriesList.layoutManager = GridLayoutManager(this, 2)
-        channelsList.layoutManager = LinearLayoutManager(this)
-        episodesList.layoutManager = LinearLayoutManager(this , RecyclerView.HORIZONTAL , false)
+        //This WICKED solution will display 3 items for tablet and 2 for mobiles ;)
+        val itemsCount = resources.getInteger(R.integer.categories_item)
+        categoriesList.layoutManager = GridLayoutManager(this, itemsCount)
+        channelsList.setVerticalLayoutManager()
+        episodesList.setHorizontalLayoutManager()
 
         categoriesList.adapter = categoryListAdapter
         channelsList.adapter = channelsAdapter
@@ -104,13 +114,17 @@ class HomeListActivity : AppCompatActivity() {
     }
 
     private fun showError(@StringRes errorMessage: Int) {
-        errorSnackbar =
-            Snackbar.make(window.decorView.rootView, errorMessage, Snackbar.LENGTH_INDEFINITE)
+        errorSnackbar = Snackbar.make(window.decorView.rootView, errorMessage, Snackbar.LENGTH_INDEFINITE)
         errorSnackbar?.setAction(R.string.retry, { refresh() })
         errorSnackbar?.show()
     }
 
     private fun hideError() {
         errorSnackbar?.dismiss()
+    }
+
+    fun <T : ViewModel?> loadViewModel(modelClass: Class<T>): T {
+        return ViewModelProviders.of(this, ViewModelFactory(this))
+            .get(modelClass)
     }
 }

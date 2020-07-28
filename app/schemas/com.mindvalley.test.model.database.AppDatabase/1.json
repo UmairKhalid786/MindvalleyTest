@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7ac2977f1d087fa8974cd9e1a49753b3",
+    "identityHash": "f9b1d5b97c5d7825c94160dbe80846a7",
     "entities": [
       {
         "tableName": "Category",
@@ -76,7 +76,7 @@
       },
       {
         "tableName": "Channel",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`channelId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `mediaCount` INTEGER NOT NULL, `series` TEXT NOT NULL, `latestMedia` TEXT NOT NULL, `iconAsset` TEXT, `coverAsset` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`channelId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `mediaCount` INTEGER NOT NULL, `series` TEXT, `latestMedia` TEXT NOT NULL, `iconAsset` TEXT, `coverAsset` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "channelId",
@@ -100,7 +100,7 @@
             "fieldPath": "series",
             "columnName": "series",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "latestMedia",
@@ -133,7 +133,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"7ac2977f1d087fa8974cd9e1a49753b3\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"f9b1d5b97c5d7825c94160dbe80846a7\")"
     ]
   }
 }

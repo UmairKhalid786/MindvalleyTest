@@ -6,19 +6,21 @@ import com.mindvalley.test.model.ChannelDao
 import com.mindvalley.test.model.responses.channels.Channel
 import com.mindvalley.test.network.MindValleyApi
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class ChannelsRepository(private val channelDao: ChannelDao ) :
+class ChannelsRepository(private val channelDao: ChannelDao) :
     BaseRepository() {
 
-    fun loadAll(forceRefresh: Boolean = false) : Observable<List<Channel>> {
+    fun loadAll(forceRefresh: Boolean = false): Observable<List<Channel>> {
         if (forceRefresh) {
             AsyncTask.execute {
-                 channelDao.clearAll()
+                channelDao.clearAll()
             }
         }
 
-       return Observable.fromCallable { channelDao.all }
+        return Observable.fromCallable { channelDao.all }
             .concatMap { dbMindValley ->
                 if (dbMindValley.isEmpty())
                     mindValleyApi.getChannels().concatMap { apiArticleResponse ->
@@ -27,12 +29,13 @@ class ChannelsRepository(private val channelDao: ChannelDao ) :
                     }
                 else
                     Observable.just(dbMindValley)
-            }
+            }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
     fun clearAll() {
-        AsyncTask.execute({
+        AsyncTask.execute {
             channelDao.clearAll()
-        })
+        }
     }
 }
