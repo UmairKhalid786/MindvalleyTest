@@ -6,8 +6,10 @@
     <dimen name="small_padding">22dp</dimen>
     <dimen name="min_padding">10dp</dimen>
     <dimen name="left_icon_hw">90dp</dimen>
-    <dimen name="card_item_small_dim">212dp</dimen>
-    <dimen name="card_item_large_dim">319dp</dimen>
+    <dimen name="course_item_width">212dp</dimen>
+    <dimen name="course_item_height">319dp</dimen>
+    <dimen name="series_item_width">448dp</dimen>
+    <dimen name="series_item_height">240dp</dimen>
     <dimen name="title_font">28sp</dimen>
     <dimen name="desc_font">20sp</dimen>
     <dimen name="main_title_font">42sp</dimen>

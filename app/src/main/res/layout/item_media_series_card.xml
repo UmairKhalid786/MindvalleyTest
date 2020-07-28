@@ -15,8 +15,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/mediaImg"
-                android:layout_width="@dimen/card_item_large_dim"
-                android:layout_height="@dimen/card_item_small_dim"
+                android:layout_width="@dimen/series_item_width"
+                android:layout_height="@dimen/series_item_height"
                 android:background="@color/black"
                 android:scaleType="centerCrop" />
 

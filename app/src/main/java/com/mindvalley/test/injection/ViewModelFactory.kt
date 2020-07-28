@@ -15,11 +15,8 @@ import com.mindvalley.test.ui.home.episode.EpisodsRepository
 class ViewModelFactory(private val activity: AppCompatActivity) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        val db = Room.databaseBuilder(
-            activity.applicationContext,
-            AppDatabase::class.java,
-            "mindvalleydb"
-        ).build()
+        AppDatabase.TEST_MODE = false
+        val db = AppDatabase.getInstance(activity.applicationContext)
 
         if (modelClass.isAssignableFrom(CategoriesListViewModel::class.java)) {
             val catRepo =
